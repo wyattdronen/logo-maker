@@ -48,7 +48,21 @@ class svg{
 
 
 function generateLogo (response) {
-    const svg = shape (response);
+    let shapeObj
+    if( response.shape === "Circle" ){
+        shapeObj = new Circle(response.text,response.textColor,response.shapeColor)
+        return shapeObj.render()
+    }
+    if( response.shape === "Square" ){
+        shapeObj = new Square(response.text,response.textColor,response.shapeColor)
+        return shapeObj.render()
+    }
+    if( response.shape === "Triangle" ){
+        shapeObj = new Triangle(response.text,response.textColor,response.shapeColor)
+        return shapeObj.render()
+    }
+    
+    const svg = shapeObj.render() (response);
     fs.writeFile(fileName, svg, ()=> console.log('logo generated'));
 };
 
