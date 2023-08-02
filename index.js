@@ -38,7 +38,7 @@ class svg{
         return '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
     }
     textSelect (text,color){
-        this.userText = `<text x="150" y="130" text-anchor="middle" font-size="40" fill="${answers.userText}">${answers.textColor}</text>`;
+        this.userText = `<text x="140" y="120" text-anchor="middle" font-size="40" fill="${answers.userText}">${answers.textColor}</text>`;
     }
     shapeSelect (shape){
         this.shapeSelect = shape.render()
