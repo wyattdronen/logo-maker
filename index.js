@@ -1,12 +1,10 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const {Circle, Square, Triangle} = require ('./lib/shapes');
-
-    
-    const questions = [
+const questions = [
     {
     type: "input",
-    name: "text",
+    name: "userText",
     message: "Enter 3 or less characters",
     },
     {
@@ -25,10 +23,8 @@ const {Circle, Square, Triangle} = require ('./lib/shapes');
     message: "Choose a shape",
     choices: ["Circle", "Square", "Triangle"],
     },
-
 ];
-
-class svg{
+class Svg{
     constructor(){
         this.userText = ''
         this.userShape = ''
@@ -41,31 +37,32 @@ class svg{
         this.userText = `<text x="140" y="120" text-anchor="middle" font-size="40" fill="${answers.userText}">${answers.textColor}</text>`;
     }
     shapeSelect (shape){
-        this.shapeSelect = shape.render()
+        this.shapeSelect = userShape.render()
         
     }
-}
-
-
+};
 function generateLogo (response) {
-    let shapeObj
+    let userShape
     if( response.shape === "Circle" ){
-        shapeObj = new Circle(response.text,response.textColor,response.shapeColor)
-        return shapeObj.render()
+        userShape = new Circle(response.userText,response.textColor,response.shapeColor)
+        return userShape.render()
     }
     if( response.shape === "Square" ){
-        shapeObj = new Square(response.text,response.textColor,response.shapeColor)
-        return shapeObj.render()
+        userShape = new Square(response.userText,response.textColor,response.shapeColor)
+        return userShape.render()
     }
     if( response.shape === "Triangle" ){
-        shapeObj = new Triangle(response.text,response.textColor,response.shapeColor)
-        return shapeObj.render()
+        userShape = new Triangle(response.userText,response.textColor,response.shapeColor)
+        return userShape.render()
     }
-    
-    const svg = shapeObj.render() (response);
-    fs.writeFile(fileName, svg, ()=> console.log('logo generated'));
-};
+   
+    var svg = new Svg();
+	svg.setUserText(userText, textColor);
+	svg.setUserShape(userShape);
+	svgString = svg.render();
+	writeToFile(svg_file, svgString); 
 
+};
 function init(){
     inquirer
         .prompt(questions)
