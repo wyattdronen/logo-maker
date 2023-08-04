@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const {Circle, Square, Triangle} = require ('./lib/shapes');
+const { response } = require('express');
 const questions = [
     {
     type: "input",
@@ -24,53 +25,39 @@ const questions = [
     choices: ["Circle", "Square", "Triangle"],
     },
 ];
-class Svg{
-    constructor(){
-        this.userText = ''
-        this.userShape = ''
 
-    }
-    render(){
-        return '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
-    }
-    textSelect (text,color){
-        this.userText = `<text x="140" y="120" text-anchor="middle" font-size="40" fill="${answers.userText}">${answers.textColor}</text>`;
-    }
-    shapeSelect (shape){
-        this.shapeSelect = userShape.render()
-        
-    }
-};
-function generateLogo (response) {
-    let userShape
+inquirer.prompt(questions).then(response => {
+
+    let shape;
     if( response.shape === "Circle" ){
-        userShape = new Circle(response.userText,response.textColor,response.shapeColor)
-        return userShape.render()
+        shape = new Circle(response.userText,response.textColor,response.shapeColor)
+        return shape.render()
     }
     if( response.shape === "Square" ){
-        userShape = new Square(response.userText,response.textColor,response.shapeColor)
-        return userShape.render()
+        shape = new Square(response.userText,response.textColor,response.shapeColor)
+        return shape.render()
     }
     if( response.shape === "Triangle" ){
-        userShape = new Triangle(response.userText,response.textColor,response.shapeColor)
-        return userShape.render()
+        shape = new Triangle(response.userText,response.textColor,response.shapeColor)
+        return shape.render()
     }
-   
-    var svg = new Svg();
-	svg.setUserText(userText, textColor);
-	svg.setUserShape(userShape);
-	svgString = svg.render();
-	writeToFile(svg_file, svgString); 
+    
+   // generate svg text
+ const svgText = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    ${shape.render()}
+    <text x="50" y="60" font-size="60" text-anchor="middle" fill="${answers.textColor}">${answers.userText}</text>
+    </svg>`;
 
-};
-function init(){
-    inquirer
-        .prompt(questions)
-        .then((response) => {
-            generateLogo(response);
-        })
-        .catch(err => {
-            console.log(err);
-        });
-};
-init ();
+fs.writeFileSync('logo.svg',svgText);
+});
+function init() {
+ inquirer.prompt(questions)
+    .then((response) => {
+ svgText(response);
+     })
+ .catch(err => {
+    console.log(err)
+     });
+    }
+
+init();
